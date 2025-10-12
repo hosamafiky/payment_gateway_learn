@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:payment_gateway_learn/features/checkout/presentation/pages/my_cart_page.dart';
 
 import 'core/theme/styles.dart';
+import 'features/checkout/imports.dart';
 
 void main() {
   runApp(const CheckoutApp());

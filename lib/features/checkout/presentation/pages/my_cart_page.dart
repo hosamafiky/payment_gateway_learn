@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-
-import '../../../../core/theme/styles.dart';
+part of '../../imports.dart';
 
 class MyCartPage extends StatelessWidget {
   const MyCartPage({super.key});
@@ -18,41 +16,17 @@ class MyCartPage extends StatelessWidget {
             Column(
               spacing: 3,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    Text('Order Subtotal', style: AppStyles.regular18),
-                    Text('\$42.97', style: AppStyles.regular18),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    Text('Discount', style: AppStyles.regular18),
-                    Text('\$0', style: AppStyles.regular18),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    Text('Shipping', style: AppStyles.regular18),
-                    Text('\$8', style: AppStyles.regular18),
-                  ],
-                ),
+                OrderInfoItem(label: "Order Subtotal", value: 43.97),
+                OrderInfoItem(label: "Discount", value: 0),
+                OrderInfoItem(label: 'Shipping', value: 8),
               ],
             ),
             Divider(height: 30, thickness: 2, indent: 15, endIndent: 15, color: Color(0xFFC7C7C7)),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                Text('Total', style: AppStyles.semibold24),
-                Text('\$50.97', style: AppStyles.semibold24),
-              ],
-            ),
+            OrderInfoItem(label: 'Total', value: 50.97, style: AppStyles.semibold24),
             const SizedBox(height: 30),
             ElevatedButton(
               onPressed: () {
-                // Handle payment completion logic here
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const PaymentDetailsPage()));
               },
               child: Text("Complete Payment"),
             ),

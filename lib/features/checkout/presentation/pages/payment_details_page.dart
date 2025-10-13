@@ -8,6 +8,7 @@ class PaymentDetailsPage extends StatefulWidget {
 }
 
 class _PaymentDetailsPageState extends State<PaymentDetailsPage> {
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   List<String> paymentMethods = ['assets/images/visa-card.png', 'assets/images/paypal.png'];
   int selectedMethodIndex = 0;
   void selectPaymentMethod(int index) {
@@ -38,7 +39,21 @@ class _PaymentDetailsPageState extends State<PaymentDetailsPage> {
                 },
               ),
             ),
-            CreditCardSection(),
+            CreditCardSection(formKey: formKey),
+            const SizedBox(height: 24),
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: ElevatedButton(
+                onPressed: () {
+                  // Validate form
+                  if (formKey.currentState!.validate()) {
+                    // Process payment
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Processing Payment...')));
+                  }
+                },
+                child: Text('Pay Now'),
+              ),
+            ),
           ],
         ),
       ),

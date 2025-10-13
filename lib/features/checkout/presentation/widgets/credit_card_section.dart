@@ -19,47 +19,45 @@ class MyCreditCardModel extends CreditCardModel with EquatableMixin {
 }
 
 class CreditCardSection extends StatefulWidget {
-  const CreditCardSection({super.key});
+  const CreditCardSection({super.key, required this.formKey});
+
+  final GlobalKey<FormState> formKey;
 
   @override
   State<CreditCardSection> createState() => _CreditCardSectionState();
 }
 
 class _CreditCardSectionState extends State<CreditCardSection> {
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  ValueNotifier<MyCreditCardModel> cardNotifier = ValueNotifier(MyCreditCardModel());
+  MyCreditCardModel cardModel = MyCreditCardModel();
   void onCreditCardModelChange(CreditCardModel model) {
-    cardNotifier.value = MyCreditCardModel.fromCreditCardModel(model);
+    setState(() {
+      cardModel = MyCreditCardModel.fromCreditCardModel(model);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-      valueListenable: cardNotifier,
-      builder: (context, model, child) {
-        return Column(
-          children: [
-            CreditCardWidget(
-              cardNumber: model.cardNumber,
-              expiryDate: model.expiryDate,
-              cardHolderName: model.cardHolderName,
-              cvvCode: model.cvvCode,
-              isHolderNameVisible: true,
-              showBackView: model.isCvvFocused,
-              onCreditCardWidgetChange: (_) {},
-            ),
-            CreditCardForm(
-              cardNumber: model.cardNumber,
-              expiryDate: model.expiryDate,
-              cardHolderName: model.cardHolderName,
-              cvvCode: model.cvvCode,
-              isCardHolderNameUpperCase: true,
-              onCreditCardModelChange: onCreditCardModelChange,
-              formKey: formKey,
-            ),
-          ],
-        );
-      },
+    return Column(
+      children: [
+        CreditCardWidget(
+          cardNumber: cardModel.cardNumber,
+          expiryDate: cardModel.expiryDate,
+          cardHolderName: cardModel.cardHolderName,
+          cvvCode: cardModel.cvvCode,
+          isHolderNameVisible: true,
+          showBackView: cardModel.isCvvFocused,
+          onCreditCardWidgetChange: (_) {},
+        ),
+        CreditCardForm(
+          cardNumber: cardModel.cardNumber,
+          expiryDate: cardModel.expiryDate,
+          cardHolderName: cardModel.cardHolderName,
+          cvvCode: cardModel.cvvCode,
+          isCardHolderNameUpperCase: true,
+          onCreditCardModelChange: onCreditCardModelChange,
+          formKey: widget.formKey,
+        ),
+      ],
     );
   }
 }

@@ -6,22 +6,33 @@ class PaymentSuccessPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Payment Success')),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(backgroundColor: Colors.transparent, elevation: 0),
+      body: Padding(
+        padding: EdgeInsets.all(20).copyWith(top: MediaQuery.viewPaddingOf(context).top + 20),
+        child: Stack(
           children: [
-            const Icon(Icons.check_circle, color: Colors.green, size: 100),
-            const SizedBox(height: 20),
-            const Text('Payment Successful!', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 10),
-            const Text('Thank you for your purchase.', style: TextStyle(fontSize: 16)),
-            const SizedBox(height: 30),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).popUntil((route) => route.isFirst);
-              },
-              child: const Text('Back to Home'),
+            ThankYouCard(),
+            Positioned(top: 0, left: 0, right: 0, child: CircleAvatar(radius: 50, backgroundColor: Color(0xFFD9D9D9))),
+            Positioned(top: 0, left: 0, right: 0, child: Icon(Icons.check_circle, size: 100, color: Colors.green)),
+            Positioned(
+              bottom: MediaQuery.sizeOf(context).height * 0.2,
+              left: -17.5,
+              child: CircleAvatar(backgroundColor: Colors.white, radius: 17.5),
+            ),
+            Positioned(
+              bottom: MediaQuery.sizeOf(context).height * 0.2,
+              right: -17.5,
+              child: CircleAvatar(backgroundColor: Colors.white, radius: 17.5),
+            ),
+            Positioned(
+              bottom: MediaQuery.sizeOf(context).height * 0.2 + 9,
+              left: 0,
+              right: 0,
+              child: CustomPaint(
+                painter: DashedLinePainter(color: Color(0xFFB8B8B8), dashWidth: 10, dashSpace: 5),
+                child: Container(height: 10),
+              ),
             ),
           ],
         ),

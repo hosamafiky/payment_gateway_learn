@@ -25,8 +25,15 @@ class MyCartPage extends StatelessWidget {
             OrderInfoItem(label: 'Total', value: 50.97, style: AppStyles.semibold24),
             const SizedBox(height: 30),
             ElevatedButton(
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const PaymentDetailsPage()));
+              onPressed: () async {
+                final payMethod = await showModalBottomSheet(
+                  context: context,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(16))),
+                  builder: (context) => PaymentDetailsBottomSheet(),
+                );
+                if (payMethod == 'card' && context.mounted) {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (_) => const PaymentSuccessPage()));
+                }
               },
               child: Text("Complete Payment"),
             ),

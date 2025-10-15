@@ -1,8 +1,14 @@
 part of '../../imports.dart';
 
-class MyCartPage extends StatelessWidget {
+class MyCartPage extends StatefulWidget {
   const MyCartPage({super.key});
 
+  @override
+  State<MyCartPage> createState() => _MyCartPageState();
+}
+
+class _MyCartPageState extends State<MyCartPage> {
+  final StripeHelper stripeHelper = StripeHelper();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,13 +32,32 @@ class MyCartPage extends StatelessWidget {
             const SizedBox(height: 30),
             ElevatedButton(
               onPressed: () async {
-                final payMethod = await showModalBottomSheet(
+                final result = await showModalBottomSheet<String?>(
                   context: context,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(16))),
-                  builder: (context) => PaymentDetailsBottomSheet(),
+                  builder: (context) => BlocProvider(
+                    create: (context) => CheckoutCubit(repository: CheckoutRepositoryImpl()),
+                    child: PaymentDetailsBottomSheet(),
+                  ),
                 );
-                if (payMethod == 'card' && context.mounted) {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (_) => const PaymentSuccessPage()));
+
+                if (result != null) {
+                  if (context.mounted) {
+                    final isError = result.contains('Exception');
+                    final isCanceled = result.contains('canceled');
+                    if (isCanceled) return;
+                    if (isError) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(result),
+                          duration: Duration(seconds: isError ? 20 : 3),
+                          backgroundColor: isError ? Colors.redAccent : null,
+                        ),
+                      );
+                    } else {
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => PaymentSuccessPage()));
+                    }
+                  }
                 }
               },
               child: Text("Complete Payment"),

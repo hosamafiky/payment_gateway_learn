@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_paymob/flutter_paymob.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 
 import '../../core/errors/failure.dart';

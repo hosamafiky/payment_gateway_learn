@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_paymob/flutter_paymob.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 
 import 'core/observers/bloc_observer.dart';
@@ -10,6 +11,12 @@ import 'features/checkout/imports.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: "important_data.env");
+  await FlutterPaymob.instance.initialize(
+    apiKey: dotenv.env['PAYMOB_API_KEY']!, // Paymob API key
+    integrationID: int.parse(dotenv.env['PAYMOB_INTEGRATION_ID']!), // Paymob integration ID
+    iFrameID: int.parse(dotenv.env['PAYMOB_iFRAME_ID']!),
+    walletIntegrationId: 654321,
+  );
   Stripe.publishableKey = dotenv.env['STRIPE_PUBLISHABLE_KEY']!;
   Bloc.observer = MyBlocObserver();
   runApp(const CheckoutApp());

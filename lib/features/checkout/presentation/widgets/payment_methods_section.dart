@@ -1,20 +1,21 @@
 part of '../../imports.dart';
 
 class PaymentMethodsSection extends StatefulWidget {
-  const PaymentMethodsSection({super.key});
+  const PaymentMethodsSection({super.key, required this.onMethodSelected});
+
+  final ValueChanged<String> onMethodSelected;
 
   @override
   State<PaymentMethodsSection> createState() => _PaymentMethodsSectionState();
 }
 
 class _PaymentMethodsSectionState extends State<PaymentMethodsSection> {
-  int selectedMethodIndex = 0;
-  List<String> paymentMethods = ['assets/images/visa-card.png', 'assets/images/paypal.png'];
+  String selectedMethodIndex = 'visa-card';
+  List<String> paymentMethods = ['assets/images/visa-card.png', 'assets/images/paymob.png'];
 
-  void selectPaymentMethod(int index) {
-    setState(() {
-      selectedMethodIndex = index;
-    });
+  void selectPaymentMethod(String method) {
+    setState(() => selectedMethodIndex = method);
+    widget.onMethodSelected(method);
   }
 
   @override
@@ -27,9 +28,10 @@ class _PaymentMethodsSectionState extends State<PaymentMethodsSection> {
         itemCount: paymentMethods.length,
         separatorBuilder: (context, index) => const SizedBox(width: 16),
         itemBuilder: (context, idx) {
+          final method = paymentMethods[idx].split('/').last.split('.').first;
           return GestureDetector(
-            onTap: () => selectPaymentMethod(idx),
-            child: PaymentMethodWidget(isSelected: selectedMethodIndex == idx, imagePath: paymentMethods[idx]),
+            onTap: () => selectPaymentMethod(method),
+            child: PaymentMethodWidget(isSelected: selectedMethodIndex == method, imagePath: paymentMethods[idx]),
           );
         },
       ),
